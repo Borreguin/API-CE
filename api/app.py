@@ -112,6 +112,7 @@ def after_request(response):
 def main():
     # aplicando la configuración general:
     configure_api_app()
+    log.info("aplicando la configuración general")
     # añadiendo los servicios necesarios:
     configure_home_api_swagger()
     # iniciando la API
@@ -122,13 +123,14 @@ def main():
         print("WARNING!! El log de la base de datos MongoDB está activado. "
               "Esto puede llenar de manera rápida el espacio en disco")
 
-    if init.FLASK_DEBUG:
-        app.run(debug=init.FLASK_DEBUG)
-    if os.name == 'nt':
-        serve(app, host='0.0.0.0', port=7820)
-    else:
-        app.run(port=7820)
+    # if init.FLASK_DEBUG:
+    #    app.run(debug=init.FLASK_DEBUG)
+    # if os.name == 'nt':
+    #    serve(app, host='0.0.0.0', port=7820)
+    # else:
+    #    app.run(port=7820)
 
 if __name__ == "__main__":
     main()
 
+main()
