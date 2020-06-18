@@ -20,7 +20,7 @@ config["ROTATING_FILE_HANDLER"] = {"filename": "app_flask.log", "maxBytes": 5000
 config["ROTATING_FILE_HANDLER_LOG_LEVEL"] = {"value": "info", "options": ["error", "warning", "info", "debug", "off"]}
 
 # MONGODB CONFIGURATION
-config["MONGOCLIENT_SETTINGS"] = {"host": "localhost", "port": 2718, "db": "DB_CE_CENACE"}
+config["MONGOCLIENT_SETTINGS"] = {"host": "localhost", "port": 27017, "db": "DB_CE_CENACE"}
 config["MONGO_LOG_LEVEL"] = {"value": "OFF", "options": ["ON", "OFF"]}
 
 # FILE repository:
