@@ -10,7 +10,8 @@ from flask import send_from_directory
 import os, sys
 from flask import Blueprint
 from flask_mongoengine import MongoEngine
-from waitress import serve   # waitress for windows deploy
+if os.name == 'nt':
+    from waitress import serve   # waitress for windows deploy
 # use unicorn for Linux version
 
 # To register path to search custom libraries
