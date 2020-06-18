@@ -125,13 +125,12 @@ def main():
 
     if init.FLASK_DEBUG:
         app.run(debug=init.FLASK_DEBUG)
+    # sistema windows
     if os.name == 'nt':
         serve(app, host='0.0.0.0', port=7820)
 
 
 if __name__ == "__main__":
     main()
-
-# en caso de correr en sistema Linux
-if os.name != 'nt' and not init.FLASK_DEBUG:
+elif os.name == 'posix':
     main()
