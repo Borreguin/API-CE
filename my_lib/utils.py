@@ -86,22 +86,3 @@ def read_excel(file_name):
             dt_excel= pkl.load(handle)
         return dt_excel, "[{0}] Leído correctamente".format(file_name)
 
-
-def create_datetime_and_span(ini_date: dt.datetime, end_date: dt.datetime):
-
-    """ Create time_range """
-    try:
-        time_range_aux = pi._time_range(str(ini_date), str(end_date))
-    except Exception as e:
-        return None, None, "No se puede crear el time_range con los siguientes parámetros [{0}, {1}]" \
-            .format(ini_date, end_date)
-
-    """ Create Span value """
-    span_aux = end_date - ini_date
-    try:
-        span_aux = max(1, span_aux.days)
-        span_aux = pi._span(str(span_aux) + "d")
-    except Exception as e:
-        return None, None, "No se pudo calcular el span [{0}, {1}] \n ".format(ini_date, end_date) + str(e)
-
-    return time_range_aux, span_aux, "Cálculo correcto de time_range y span [{0}, {1}, {2}]".format(ini_date, end_date, span_aux)
