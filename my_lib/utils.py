@@ -2,9 +2,7 @@ import argparse, os
 import datetime as dt
 import pandas as pd
 import pickle as pkl
-from my_lib.PI_connection import pi_connect as pi
 
-pi_svr = pi.PIserver()
 script_path = os.path.dirname(os.path.abspath(__file__))
 
 
