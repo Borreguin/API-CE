@@ -112,12 +112,16 @@ def after_request(response):
 def main():
     # aplicando la configuración general:
     configure_api_app()
-    log.info("aplicando la configuración general")
+    log.info("--- Aplicando la configuración general")
     # añadiendo los servicios necesarios:
     configure_home_api_swagger()
     # iniciando la API
-    log.info('>>>>> Starting development server at http://{}/services/ <<<<<'.format(app.config['SERVER_NAME']))
+    if init.FLASK_DEBUG:
+        log.info('>>>>> Starting development server at http://{}/services/ <<<<<'.format(app.config['SERVER_NAME']))
+    else:
+        log.info('>>>>> Starting production server at http://{}/services/ <<<<<'.format(app.config['SERVER_NAME']))
     # iniciando base de datos Mongo
+    log.info("--- Iniciando conexión con base de datos MongoDB")
     configure_mongo_engine()
     if init.MONGO_LOG_LEVEL == "ON":
         print("WARNING!! El log de la base de datos MongoDB está activado. "
@@ -128,6 +132,7 @@ def main():
     # sistema windows
     if os.name == 'nt':
         serve(app, host='0.0.0.0', port=7820)
+    log.info("--- Configuración exitosa")
 
 
 if __name__ == "__main__":
