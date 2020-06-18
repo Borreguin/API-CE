@@ -4,7 +4,7 @@ config["name"] = "settings"
 config["version"] = "0.1"
 
 config["FLASK_SERVER_NAME"] = "localhost:7077"
-config["FLASK_DEBUG"] = True
+config["FLASK_DEBUG"] = False
 
 # Configuración de la librería API:
 config["RESTPLUS_SWAGGER_UI_DOC_EXPANSION"] = "list"
