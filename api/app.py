@@ -119,7 +119,7 @@ def main():
     if init.FLASK_DEBUG:
         log.info('>>>>> Starting development server at http://{}/services/ <<<<<'.format(app.config['SERVER_NAME']))
     else:
-        log.info('>>>>> Starting production server at http://{}/services/ <<<<<'.format(app.config['SERVER_NAME']))
+        log.info('>>>>> Starting production server at http://{}/services/ <<<<<')
     # iniciando base de datos Mongo
     log.info("--- Iniciando conexión con base de datos MongoDB")
     configure_mongo_engine()
