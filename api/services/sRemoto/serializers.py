@@ -1,4 +1,4 @@
-from settings.initial_settings import SUPPORTED_FORMAT_DATES as time_formats
+from api.settings.initial_settings import SUPPORTED_FORMAT_DATES as time_formats
 from flask_restplus import fields, Model
 
 import datetime as dt

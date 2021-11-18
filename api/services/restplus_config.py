@@ -11,8 +11,8 @@ from flask import request
 import datetime as dt
 from flask_restplus import Api
 from sqlalchemy.orm.exc import NoResultFound
-from settings.initial_settings import LogDefaultConfig
-from settings.initial_settings import MONGOCLIENT_SETTINGS
+from api.settings.initial_settings import LogDefaultConfig
+from api.settings.initial_settings import MONGOCLIENT_SETTINGS
 
 """ mongo client config"""
 from pymongo import MongoClient

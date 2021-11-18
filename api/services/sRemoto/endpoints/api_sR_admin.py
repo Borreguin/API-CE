@@ -14,13 +14,13 @@ from flask_restplus import Resource
 from flask import request
 import re, os
 # importando configuraciones iniciales
-from settings import initial_settings as init
+from api.settings import initial_settings as init
 from api.services.restplus_config import api
 from api.services.restplus_config import default_error_handler
 from api.services.sRemoto import serializers as srl
 from api.services.sRemoto import parsers
 # importando clases para leer desde MongoDB
-from my_lib.mongo_engine_handler.sRNode import *
+from api.my_lib.mongo_engine_handler.sRNode import *
 
 
 # configurando logger y el servicio web

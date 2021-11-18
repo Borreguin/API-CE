@@ -20,7 +20,7 @@ project_path = os.path.dirname(script_path)
 sys.path.append(project_path)
 sys.path.append(script_path)
 
-from settings import initial_settings as init
+from api.settings import initial_settings as init
 # importando la configuración general de la API
 from api.services.restplus_config import api as api_p
 import datetime as dt
@@ -30,6 +30,7 @@ from flask import request
 # namespaces: Todos los servicios de esta API
 # from api.services.Diagrams.endpoints.api_diagrams import ns as namespace_diagrams
 from api.services.Formulario.endpoints.api_form import ns as namespace_formularios
+from api.services.Formulario.endpoints.api_users import ns as namespace_usuarios
 
 """ global variables """
 app = Flask(__name__)                                                   # Flask application
@@ -75,6 +76,7 @@ def configure_home_api_swagger():
     # añadiendo los servicios de cálculo:
     # api_p.add_namespace(namespace_sR_admin)
     api_p.add_namespace(namespace_formularios)
+    api_p.add_namespace(namespace_usuarios)
 
     # registrando las rutas:
     app.register_blueprint(blueprint)

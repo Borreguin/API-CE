@@ -1,10 +1,9 @@
-from my_lib.mongo_engine_handler import sRNode as DS
-from my_lib.mongo_engine_handler import sRNodeReport as nRep
-from my_lib.mongo_engine_handler import Consignment as Cons
+from api.my_lib.mongo_engine_handler import sRNodeReport as nRep, sRNode as DS, Consignment as Cons
 import random as r
 from mongoengine import *
 import datetime as dt
-from settings import initial_settings as init
+from api.settings import initial_settings as init
+
 DEBUG = True
 
 d_n = dt.datetime.now()

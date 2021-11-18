@@ -1,4 +1,4 @@
-from settings.initial_settings import SUPPORTED_FORMAT_DATES as time_formats
+from api.settings.initial_settings import SUPPORTED_FORMAT_DATES as time_formats
 from flask_restplus import fields, Model
 
 import datetime as dt
@@ -41,4 +41,19 @@ class FormSerializers:
                                      "archivos": fields.List(fields.String(required=False,
                                                                description="Archivos")),
                                  })
+
+        """ serializador para usuarios """
+        self.usuario = api.model("Información básica del usuario",
+                               {
+                                   "ci": fields.String(required=True,
+                                                       description="Cédula de ciudadanía"),
+                                   "nombre_apellidos": fields.String(required=True,
+                                                                     description="Nombre y apellidos"),
+                                   "correo_electronico": fields.String(required=True,
+                                                                       description="Correo eléctronico"),
+                                   "cargo": fields.String(required=True,
+                                                          description="Cargo de la persona"),
+                                   "telefono": fields.String(required=False,
+                                                             description="Teléfono de contacto"),
+                               })
         return api

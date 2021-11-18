@@ -2,15 +2,15 @@ from flask_restplus import Resource
 from flask import request, send_file
 import re, os
 # importando configuraciones iniciales
-from settings import initial_settings as init
+from api.settings import initial_settings as init
 from api.services.restplus_config import api
 from api.services.restplus_config import default_error_handler
 from api.services.Formulario import serializers as srl
 from api.services.Formulario import parsers
 # importando clases para leer desde MongoDB
-from my_lib.mongo_engine_handler.Form import *
-from my_lib.send_mail.send_mail import *
-from my_lib.captcha.captcha_util import *
+from api.my_lib.mongo_engine_handler.Form import *
+from api.my_lib.send_mail.send_mail import *
+from api.my_lib.captcha.captcha_util import *
 # configurando logger y el servicio web
 log = init.LogDefaultConfig("ws_denuncias.log").logger
 ns = api.namespace('formularios', description='Relativas a la gestión de trámites del Comité de Ética de CENACE')

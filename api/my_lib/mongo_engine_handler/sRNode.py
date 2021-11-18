@@ -10,7 +10,7 @@ import hashlib
 import traceback
 
 from mongoengine import *
-from my_lib.mongo_engine_handler.Consignment import *
+from api.my_lib.mongo_engine_handler.Consignment import *
 import datetime as dt
 import pandas as pd
 
