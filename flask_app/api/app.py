@@ -80,8 +80,7 @@ def adding_app_routes(app):
     def main_page():
         """ Adding initial page """
         return f"This is home page for this API, check the prefix to see the UI: {init.API_PREFIX} " \
-               f"<br><br>Gerencia Nacional de Desarrollo Técnico - Octubre 2020 - API Cálculo de disponibilidad de " \
-               f"Sistema Remoto"
+               f"<br><br>Gerencia Nacional de Desarrollo Técnico - Octubre 2020 - API de Comite de Ética de CENACE "
 
     @app.route('/favicon.ico')
     def favicon():
