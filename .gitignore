@@ -1,3 +1,15 @@
 /_db/mongo_db
+/mongo_db
 /_db/files
 /logs
+/.idea/
+/.vscode
+/_db
+/_MongoDB/mongo_db
+/_MongoDB/logs
+/temp
+/flask_app/settings/env/dev.py
+/flask_app/settings/env/prod.py
+/Production_server_1.txt
+__pycache__/
+*.pyc

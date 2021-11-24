@@ -8,7 +8,7 @@ script_path = os.path.dirname(os.path.abspath(__file__))  # obtener el path abso
 project_path = os.path.dirname(script_path)
 sys.path.append(project_path)
 
-db_path = os.path.join(script_path, "", "../mongo_db")
+db_path = os.path.join(script_path, "/mongo_db")
 path_v4_2 = 'C:\\Program Files\\MongoDB\\Server\\4.2\\bin\\mongod.exe'
 path_v4_4 = 'C:\\Program Files\\MongoDB\\Server\\4.4\\bin\\mongod.exe'
 
