@@ -1,10 +1,11 @@
 import os, sys
 
 # To register path to search custom libraries
-script_path = os.path.dirname(os.path.abspath(__file__))
-project_path = os.path.dirname(script_path)
+api_path = os.path.dirname(os.path.abspath(__file__))
+flask_path = os.path.dirname(api_path)
+project_path = os.path.dirname(flask_path)
+sys.path.append(api_path)
 sys.path.append(project_path)
-sys.path.append(script_path)
 
 from flask_app.api.app import app
 
