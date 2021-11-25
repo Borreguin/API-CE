@@ -20,28 +20,22 @@ api = ser_from.add_serializers()
 class UserAPI(Resource):
     def get(self, ci: str = "Cédula del usuario"):
         """ Busca un usuario mediante su número de cédula """
-        try:
-            # forma = SRNode.objects(nombre=nombre).first()
-            user = User.objects(ci=ci).first()
-            if user is None:
-                return dict(success=False, msg="Usuario no encontrado"), 404
-            return dict(success=True, user=user.to_dict()), 200
-        except Exception as e:
-            return default_error_handler(e)
+        # forma = SRNode.objects(nombre=nombre).first()
+        user = User.objects(ci=ci).first()
+        if user is None:
+            return dict(success=False, msg="Usuario no encontrado"), 404
+        return dict(success=True, user=user.to_dict()), 200
 
     @api.expect(ser_from.usuario)
     def post(self, ci: str = "Cédula del usuario"):
         """ Ingresa un usuario mediante su número de cédula
             Si el usuario ya existe entonces error 409
         """
-        try:
-            # forma = SRNode.objects(nombre=nombre).first()
-            user = User.objects(ci=ci).first()
-            request_data = dict(request.json)
-            if user is not None:
-                return dict(success=False, msg="Usuario ya existe"), 409
-            user = User(**request_data)
-            user.save()
-            return dict(success=True, user=user.to_dict()), 200
-        except Exception as e:
-            return default_error_handler(e)
+        # forma = SRNode.objects(nombre=nombre).first()
+        user = User.objects(ci=ci).first()
+        request_data = dict(request.json)
+        if user is not None:
+            return dict(success=False, msg="Usuario ya existe"), 409
+        user = User(**request_data)
+        user.save()
+        return dict(success=True, user=user.to_dict()), 200

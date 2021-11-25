@@ -31,34 +31,29 @@ class EmailsComiteAPI(Resource):
     @api.expect(ser_from.emails)
     def post(self):
         """ Configura los emails del personal miembro de comité de ética """
-        try:
-            request_data = dict(request.json)
-            emails = request_data.get("emails", None)
-            if emails is None:
-                return dict(success=False, msg="Operación incorrecta"), 400
-            # check email string:
-            for email in emails:
-                if not re.fullmatch(regex_mail, email):
-                    return dict(success=False, msg=f"El mail {email} es incorrecto"), 400
-            # configurando:
-            configurations = ConfiguracionMail.objects(id_config="configuracionMail").first()
-            if configurations is None:
-                configurations = ConfiguracionMail(emails=emails)
-            else:
-                configurations.emails = emails
-                configurations.actualizado = dt.datetime.now()
-            configurations.save()
-            return dict(success=True, config=configurations.to_dict(), msg="Configuración guardada"), 200
-        except Exception as e:
-            return default_error_handler(e)
+        request_data = dict(request.json)
+        emails = request_data.get("emails", None)
+        if emails is None:
+            return dict(success=False, msg="Operación incorrecta"), 400
+        # check email string:
+        for email in emails:
+            if not re.fullmatch(regex_mail, email):
+                return dict(success=False, msg=f"El mail {email} es incorrecto"), 400
+        # configurando:
+        configurations = ConfiguracionMail.objects(id_config="configuracionMail").first()
+        if configurations is None:
+            configurations = ConfiguracionMail(emails=emails)
+        else:
+            configurations.emails = emails
+            configurations.actualizado = dt.datetime.now()
+        configurations.save()
+        return dict(success=True, config=configurations.to_dict(), msg="Configuración guardada"), 200
+
 
     def get(self):
         """ Obtiene la configuración de los emails del personal miembro de comité de ética """
-        try:
-            # configurando:
-            configurations = ConfiguracionMail.objects(id_config="configuracionMail").first()
-            if configurations is None:
-                configurations = ConfiguracionMail()
-            return dict(success=True, config=configurations.to_dict(), msg="Configuración obtenida"), 200
-        except Exception as e:
-            return default_error_handler(e)
+        # configurando:
+        configurations = ConfiguracionMail.objects(id_config="configuracionMail").first()
+        if configurations is None:
+            configurations = ConfiguracionMail()
+        return dict(success=True, config=configurations.to_dict(), msg="Configuración obtenida"), 200

@@ -15,6 +15,13 @@ def send_mail(msg_to_send:str, subject, recipients, from_email, image_list: list
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
     import smtplib
+    import ssl
+    # Create context (to specify TLS version)
+    sc = ssl.create_default_context()
+    sc.options |= ssl.OP_NO_TLSv1_2 | ssl.OP_NO_TLSv1_3
+    # sc.minimum_version = ssl.TLSVersion.TLSv1_1
+    sc.check_hostname = False
+    sc.verify_mode = ssl.CERT_NONE
 
     try:
         im_to_append = list()

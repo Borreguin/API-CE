@@ -91,7 +91,7 @@ def read_excel(file_name):
         return dt_excel, "[{0}] Leído correctamente".format(file_name)
 
 
-def fill_information_usuario(html_str: str, form: FormularioTemporal):
+def fill_information_usuario(html_str: str, form: FormularioTemporal, files=None):
     html_str = html_str.replace("#codigo_tramite", form.id_forma)
     html_str = html_str.replace("#tipo_tramite", form.data["tipo_tramite"])
     html_str = html_str.replace("#nombres", form.data["nombre_apellidos"])
@@ -103,10 +103,14 @@ def fill_information_usuario(html_str: str, form: FormularioTemporal):
     html_str = html_str.replace("#enlace_modificacion", enlace_modifiacion)
     enlace_aceptar = f"{init.HOSTNAME_URL}/confirmacion?ifmd={form.id_forma}"
     html_str = html_str.replace("#enlace_aceptar", enlace_aceptar)
+    if files is None or len(files) == 0:
+        html_str = html_str.replace("#archivos","Sin archivos adjuntos")
+    else:
+        html_str = html_str.replace("#archivos", "; ".join(files))
     return html_str
 
 
-def fill_information_comite(html_str: str, form: FormularioTemporal):
+def fill_information_comite(html_str: str, form: FormularioTemporal, files=None):
     html_str = html_str.replace("#codigo_tramite", form.id_forma)
     html_str = html_str.replace("#tipo_tramite", form.data["tipo_tramite"])
     html_str = html_str.replace("#nombres", form.data["nombre_apellidos"])
@@ -114,4 +118,22 @@ def fill_information_comite(html_str: str, form: FormularioTemporal):
     html_str = html_str.replace("#cargo", form.data["cargo"])
     html_str = html_str.replace("#telefono", form.data["telefono"])
     html_str = html_str.replace("#detalle", form.data["detalle_tramite"])
+    if files is None or len(files) == 0:
+        html_str = html_str.replace("#archivos","Sin archivos adjuntos")
+    else:
+        html_str = html_str.replace("#archivos", "; ".join(files))
     return html_str
+
+
+def get_files_for(id_forma:str):
+    file_form_path = os.path.join(init.FILE_REPO, id_forma)
+    if not os.path.exists(file_form_path):
+        return []
+    dirs = os.listdir(file_form_path)
+    return [f for f in dirs if os.path.isfile(os.path.join(file_form_path, f))]
+
+
+def set_max_age_to_response(response, seconds):
+    response.expires = dt.datetime.utcnow() + dt.timedelta(seconds=seconds)
+    response.cache_control.max_age = seconds
+    return response
