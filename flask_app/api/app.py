@@ -30,6 +30,7 @@ from flask_app.api.services.Formulario.endpoints.api_form import ns as namespace
 from flask_app.api.services.Formulario.endpoints.api_users import ns as namespace_api_users
 from flask_app.api.services.Formulario.endpoints.api_confirmation import ns as namespace_confirmacion
 from flask_app.api.services.Formulario.endpoints.api_configurations import ns as namespace_configurations
+from flask_app.api.services.Formulario.endpoints.api_timeline import ns as namespace_timeline
 
 """ global variables """
 from flask_app.api.app_config import log  # Logger
@@ -51,6 +52,7 @@ def adding_end_points(blueprint, app):
     api_p.add_namespace(namespace_api_users)
     api_p.add_namespace(namespace_confirmacion)
     api_p.add_namespace(namespace_configurations)
+    api_p.add_namespace(namespace_timeline)
 
     # registrando las rutas:
     app.register_blueprint(blueprint)

@@ -5,6 +5,7 @@ from flask import request, send_file, send_from_directory
 # importando configuraciones iniciales
 import flask_app.settings.LogDefaultConfig
 from flask_app.dto.mongo_class.Captcha import Captcha
+from flask_app.dto.mongo_class.Form import Formulario
 from flask_app.my_lib.utils import fill_information_usuario, get_files_for, set_max_age_to_response
 from flask_app.settings import initial_settings as init
 from flask_app.api.services.restplus_config import api
@@ -28,9 +29,9 @@ api = ser_from.add_serializers()
 class FormularioAPI(Resource):
 
     def get(self, id_forma: str = "Id de la forma a buscar"):
-        """ Busca si una forma usando el id """
+        """ Busca si una forma definitiva aceptada vía correo electrónico """
         # forma = SRNode.objects(nombre=nombre).first()
-        forma = FormularioTemporal.objects(id_forma=id_forma).first()
+        forma = Formulario.objects(id_forma=id_forma).first()
         if forma is None:
             return dict(success=False, forma=None, msg="Información no encontrada"), 404
         files = get_files_for(id_forma)
@@ -71,7 +72,8 @@ class FormularioPostAPI(Resource):
         temp_form = FormularioTemporal.objects(id_forma=id_forma).first()
         if temp_form is not None:
             return dict(success=False, forma=None, msg="Esta forma ya existe"), 304
-        forma = FormularioTemporal(data=request_data)
+        request_data.pop("id_forma", None)
+        forma = FormularioTemporal(data=DataForm(**request_data))
         forma.save()
         return dict(success=True, forma=forma.to_dict(), msg="Forma registrada de manera correcta"), 200
 
@@ -88,18 +90,24 @@ class EvidenciasAPI(Resource):
         # verificar existencia de folder
         destination = os.path.join(init.FILE_REPO, id_forma)
         if not os.path.exists(destination):
-            os.makedirs(destination)
+            try:
+                os.makedirs(destination)
+            except:
+                log.info(f"This file already exists {destination}")
         # path del archivo a guardar
-        destination = os.path.join(destination, filename)
-        with open(destination, 'wb') as f:
+        file_path = os.path.join(destination, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        with open(file_path, 'wb') as f:
             f.write(stream_file)
-        return dict(success=True), 200
+        return dict(success=True, msg=f" {filename} - This file was upload"), 200
 
 
 @ns.route('/forma/<string:id_forma>/evidencias/<string:file>')
 class EvidenciasFileAPI(Resource):
 
     def get(self, id_forma, file):
+        """ Obtiene un archivo subido al expediente """
         form_path = os.path.join(init.FILE_REPO, id_forma)
         file_path = os.path.join(form_path, file)
         if not os.path.exists(file_path):
@@ -108,6 +116,7 @@ class EvidenciasFileAPI(Resource):
         return set_max_age_to_response(response, 30)
 
     def delete(self, id_forma, file):
+        """ Elimina un archivo subido al expediente """
         form_path = os.path.join(init.FILE_REPO, id_forma)
         file_path = os.path.join(form_path, file)
         if not os.path.exists(file_path) or not os.path.isfile(file_path):
@@ -116,9 +125,11 @@ class EvidenciasFileAPI(Resource):
         files = get_files_for(id_forma)
         return dict(success=True, files=files, msg="Archivo eliminado"), 200
 
+
 @ns.route('/captcha/<string:id>')
 class CaptchaAPI(Resource):
     def post(self, id):
+        """ Crea un nuevo Captcha """
         text, image = gen_captcha(6)
         captcha = Captcha(id_captcha=id,text=text)
         captcha.save()
@@ -130,6 +141,7 @@ class CaptchaAPI(Resource):
 @ns.route('/captcha/<string:id>/<string:value>/verified')
 class VerifiedCaptchaAPI(Resource):
     def get(self, id, value):
+        """ Verifica si el código ingresado corresponde al código captcha generado """
         captcha = Captcha.objects(id_captcha=id).first()
         if captcha is None:
             return dict(success=False, errors="No se encontró el captcha en referencia"), 400
@@ -144,6 +156,7 @@ class EvidenciaAPI(Resource):
     @api.response(200, 'Archivo subido correctamente')
     @api.expect(parsers.file_upload)
     def post(self):
+        """ Añade archivos de evidencia en la carpeta temporal """
         args = parsers.file_upload.parse_args()
         filename = args['file'].filename
         stream_file = args['file'].stream.read()
@@ -173,3 +186,13 @@ class mailAPI(Resource):
         mail = temp_form.data["correo_electronico"]
         success, msg = send_mail(html_str, "Notificación CENACE CE", [mail], init.from_email)
         return dict(success=success, msg=msg), 200 if success else 409
+
+
+@ns.route('')
+class FormsAPI(Resource):
+    def get(self):
+        """ Obtiene todos los trámites ingresados a la plataforma """
+        result = list()
+        for form in Formulario.objects:
+            result.append(form.to_dict())
+        return dict(success=True, forms=result, msg="Lista de trámites"), 200

@@ -7,7 +7,7 @@ class Captcha(Document):
     id_captcha = StringField(required=True, unique=True)
     text = StringField(required=True, unique=True)
     created = DateTimeField(default=dt.datetime.now())
-    meta = {"collection": "CNF|Captcha", 'indexes': [{
+    meta = {"collection": "CNFG|Captcha", 'indexes': [{
                 'fields': ['created'],
                 'expireAfterSeconds': 36000
             }]}

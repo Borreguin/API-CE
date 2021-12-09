@@ -1,5 +1,6 @@
 from flask_app.settings.initial_settings import SUPPORTED_FORMAT_DATES as time_formats
 from flask_restplus import fields, Model
+from flask_app.settings import initial_settings as init
 
 import datetime as dt
 
@@ -61,4 +62,13 @@ class FormSerializers:
                                  {
                                      "emails": fields.List(fields.String, required=True, description="email individual")
                                  })
+
+        """ timeline de comité de ética """
+        self.timeline = api.model("Info Timeline",
+                                {
+                                    "state": fields.String(required=True, description=f"options: {init.state_list}"),
+                                    "responsible": fields.String(required=True, description=f"Responsable"),
+                                    "description": fields.String(required=True, description=f"Descripcion de la accion"),
+                                })
+
         return api

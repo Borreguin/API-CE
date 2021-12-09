@@ -11,5 +11,6 @@
 /flask_app/settings/env/dev.py
 /flask_app/settings/env/prod.py
 /Production_server_1.txt
+/venv/
 __pycache__/
 *.pyc

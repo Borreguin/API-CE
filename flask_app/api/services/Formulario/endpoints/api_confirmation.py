@@ -39,7 +39,7 @@ class ConfirmacionAPI(Resource):
         if formaFinalDB is not None:
             return dict(success=False, forma=None, msg="Esta información ya ha sido registrada en el sistema"), 409
         # si no existe entonces guarde en base de datos:
-        formaFinal = Formulario(**forma.to_dict())
+        formaFinal = Formulario(**forma.to_object())
         formaFinal.save()
         return dict(success=True, forma=formaFinal.to_dict(), msg="Información cargada"), 200
 
@@ -62,10 +62,10 @@ class ConfirmacionMailAPI(Resource):
         # mail configuration:
         config = ConfiguracionMail.objects(id_config="configuracionMail").first()
         if config is None:
-            return dict(success=True, msg="La información de mail aún no ha sido configurada")
+            return dict(success=True, msg="La información de mail aún no ha sido configurada"), 404
         # send information to Comite:
         success, msg = send_mail(html_str, "Notificación CENACE para el Comité de Ética",
                                  config.emails, init.from_email)
         msg = "Se ha enviado de manera correcta la notificación al comité de Ética de CENACE. " \
               "Luego del análisis recibirá más información del estado de su trámite" if success else msg
-        return dict(success=success, msg=msg), 200 if success else 409
+        return dict(success=success, msg=msg), 200 if success else 500

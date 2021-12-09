@@ -86,3 +86,7 @@ if not os.path.exists(FILE_REPO):
 
 TEMPLATE_REPO = os.path.join(api_path, "templates")
 
+""" Application """
+
+New, in_progress, stopped, finished = "Inicio de proceso", "En trámite", "Detenido", "Finalizado"
+state_list = [New, in_progress, stopped, finished]
