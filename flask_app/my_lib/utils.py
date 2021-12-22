@@ -32,7 +32,7 @@ def check_date_yyyy_mm_dd(s):
 
 
 def fill_basic_information(html_str: str, form, files=None):
-    html_str = html_str.replace("#codigo_tramite", form.id_forma, files)
+    html_str = html_str.replace("#codigo_tramite", form.id_forma)
     html_str = html_str.replace("#tipo_tramite", form.data["tipo_tramite"])
     html_str = html_str.replace("#nombres", form.data["nombre_apellidos"])
     html_str = html_str.replace("#c_ciudadania", form.data["ci"])
