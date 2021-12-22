@@ -57,6 +57,10 @@ def fill_information_usuario(html_str: str, form: FormularioTemporal, files=None
 
 def fill_information_comite(html_str: str, form: FormularioTemporal, files=None):
     html_str = fill_basic_information(html_str, form, files)
+    enlace_seguimiento = f"{init.HOSTNAME_URL}/seguimiento?ifmd={form.id_forma}"
+    html_str = html_str.replace("#enlace_seguimiento", enlace_seguimiento)
+    enlace_formularios = f"{init.HOSTNAME_URL}/formularios"
+    html_str = html_str.replace("#enlace_formularios", enlace_formularios)
     return html_str
 
 
