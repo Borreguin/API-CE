@@ -30,7 +30,6 @@ class FormularioAPI(Resource):
 
     def get(self, id_forma: str = "Id de la forma a buscar"):
         """ Busca si una forma definitiva aceptada vía correo electrónico """
-        # forma = SRNode.objects(nombre=nombre).first()
         forma = Formulario.objects(id_forma=id_forma).first()
         if forma is None:
             return dict(success=False, forma=None, msg="Información no encontrada"), 404
@@ -47,6 +46,18 @@ class FormularioAPI(Resource):
         forma.update_data(request_data)
         forma.save()
         return dict(success=True, forma=forma.to_dict(), msg="Información actualizada"), 200
+
+
+@ns.route('/forma-temporal/<string:id_forma>')
+class FormularioTemporalAPI(Resource):
+
+    def get(self, id_forma: str = "Id de la forma a buscar"):
+        """ Busca si una forma temporal insertada mediante formulario """
+        forma = FormularioTemporal.objects(id_forma=id_forma).first()
+        if forma is None:
+            return dict(success=False, forma=None, msg="Información no encontrada"), 404
+        files = get_files_for(id_forma)
+        return dict(success=True, forma=forma.to_dict(), files=files, msg="Información cargada"), 200
 
 
 @ns.route('/usuario/<string:ci>')
@@ -78,7 +89,7 @@ class FormularioPostAPI(Resource):
         return dict(success=True, forma=forma.to_dict(), msg="Forma registrada de manera correcta"), 200
 
 
-@ns.route('/forma/<string:id_forma>/evidencias')
+@ns.route('/forma-temporal/<string:id_forma>/evidencias')
 class EvidenciasAPI(Resource):
     @api.response(200, 'Archivo subido correctamente')
     @api.expect(parsers.file_upload)
