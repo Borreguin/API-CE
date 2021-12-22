@@ -5,8 +5,10 @@ from flask import request, send_file, send_from_directory
 # importando configuraciones iniciales
 import flask_app.settings.LogDefaultConfig
 from flask_app.dto.mongo_class.Captcha import Captcha
+from flask_app.dto.mongo_class.ConfiguracionGeneral import ConfiguracionMail
 from flask_app.dto.mongo_class.Form import Formulario
-from flask_app.my_lib.utils import fill_information_usuario, get_files_for, set_max_age_to_response
+from flask_app.my_lib.utils import fill_information_usuario, get_files_for, set_max_age_to_response, \
+    fill_timeline_notification
 from flask_app.settings import initial_settings as init
 from flask_app.api.services.restplus_config import api
 from flask_app.api.services.restplus_config import default_error_handler
@@ -196,6 +198,29 @@ class mailAPI(Resource):
         html_str = fill_information_usuario(html_str, temp_form, get_files_for(id_forma))
         mail = temp_form.data["correo_electronico"]
         success, msg = send_mail(html_str, "Notificación CENACE CE", [mail], init.from_email)
+        return dict(success=success, msg=msg), 200 if success else 409
+
+
+@ns.route('/mail-timeline/<string:id_forma>')
+class mailTimelineAPI(Resource):
+    def post(self, id_forma):
+        """ Envía mail de notificación de cambio de estado usando informacion del formulario """
+        form = Formulario.objects(id_forma=id_forma).first()
+        if form is None:
+            return dict(success=False, msg="Los datos no han sido ingresados en el Sistema")
+        # read template for notifications:
+        html_template_path = os.path.join(init.TEMPLATE_REPO, "Notification_Timeline.html")
+        html_str = codecs.open(html_template_path, 'r', 'utf-8').read()
+        # filling information:
+        html_str = fill_timeline_notification(html_str, form, get_files_for(id_forma))
+        mail = form.data["correo_electronico"]
+
+        # mail configuration:
+        config = ConfiguracionMail.objects(id_config="configuracionMail").first()
+        if config is None:
+            return dict(success=True, msg="La información de mail aún no ha sido configurada"), 404
+        emails = [mail] + config.emails
+        success, msg = send_mail(html_str, "Notificación CENACE CE: Cambio de estado", emails, init.from_email)
         return dict(success=success, msg=msg), 200 if success else 409
 
 
