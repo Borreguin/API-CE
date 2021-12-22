@@ -201,29 +201,6 @@ class mailAPI(Resource):
         return dict(success=success, msg=msg), 200 if success else 409
 
 
-@ns.route('/mail-timeline/<string:id_forma>')
-class mailTimelineAPI(Resource):
-    def post(self, id_forma):
-        """ Envía mail de notificación de cambio de estado usando informacion del formulario """
-        form = Formulario.objects(id_forma=id_forma).first()
-        if form is None:
-            return dict(success=False, msg="Los datos no han sido ingresados en el Sistema")
-        # read template for notifications:
-        html_template_path = os.path.join(init.TEMPLATE_REPO, "Notification_Timeline.html")
-        html_str = codecs.open(html_template_path, 'r', 'utf-8').read()
-        # filling information:
-        html_str = fill_timeline_notification(html_str, form, get_files_for(id_forma))
-        mail = form.data["correo_electronico"]
-
-        # mail configuration:
-        config = ConfiguracionMail.objects(id_config="configuracionMail").first()
-        if config is None:
-            return dict(success=True, msg="La información de mail aún no ha sido configurada"), 404
-        emails = [mail] + config.emails
-        success, msg = send_mail(html_str, "Notificación CENACE CE: Cambio de estado", emails, init.from_email)
-        return dict(success=success, msg=msg), 200 if success else 409
-
-
 @ns.route('')
 class FormsAPI(Resource):
     def get(self):
