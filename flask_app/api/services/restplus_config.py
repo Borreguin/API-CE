@@ -19,10 +19,11 @@ from pymongo import MongoClient
 mongo_client = MONGOCLIENT_SETTINGS
 dup_key_error = "duplicate key error"
 import re
+from flask_app.settings import initial_settings as init
 
 api_log = LogDefaultConfig("api_services.log").logger
 
-api = Api(version='0.1', title='API - Sistema de registro de denuncias del Comité Ética - CENACE',
+api = Api(version=init.VERSION, title='API - Sistema de registro de denuncias del Comité Ética - CENACE',
           contact="Roberto Sánchez A",
           contact_email="rg.sanchez.a@gmail.com",
           contact_url="https://github.com/Borreguin",
