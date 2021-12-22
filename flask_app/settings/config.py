@@ -2,7 +2,7 @@ import os
 config = dict()
 
 config["name"] = "settings"
-config["version"] = "0.1"
+config["version"] = "1.5"
 
 config["FLASK_SERVER_NAME"] = "localhost:7077"
 config["FLASK_DEBUG"] = False
