@@ -41,6 +41,7 @@ class ConfirmacionAPI(Resource):
         # si no existe entonces guarde en base de datos:
         formaFinal = Formulario(**forma.to_object())
         formaFinal.save()
+        forma.delete()
         return dict(success=True, forma=formaFinal.to_dict(), msg="Información cargada"), 200
 
 
