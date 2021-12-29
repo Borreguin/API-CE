@@ -5,7 +5,7 @@ from flask_app.settings import initial_settings as init
 
 
 class Timeline(EmbeddedDocument):
-    id_timeline = StringField(required=True, unique=True, default=None)
+    id_timeline = StringField(required=True, default=None)
     description = StringField(required=True, default=None)
     responsible = StringField(required=True, default="System")
     state = StringField(required=True, default=init.New, choices=init.state_list)

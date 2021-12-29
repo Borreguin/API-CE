@@ -80,9 +80,16 @@ SQLALCHEMY_TRACK_MODIFICATIONS = config["SQLALCHEMY_TRACK_MODIFICATIONS"]
 
 """" FILE REPO CONFIGURATION """
 FILE_REPO = config["FILE_REPO"]
-FILE_REPO = os.path.join(project_path, FILE_REPO)
-if not os.path.exists(FILE_REPO):
-    os.makedirs(FILE_REPO)
+LOGS_REPO = config["LOGS_REPO"]
+REPOS = [FILE_REPO, LOGS_REPO]
+FINAL_REPOS = list()
+for repo in REPOS:
+    repo = os.path.join(project_path, repo)
+    FINAL_REPOS.append(repo)
+    if not os.path.exists(repo):
+        os.makedirs(repo)
+
+[FILE_REPO, LOGS_REPO] = FINAL_REPOS
 
 TEMPLATE_REPO = os.path.join(api_path, "templates")
 

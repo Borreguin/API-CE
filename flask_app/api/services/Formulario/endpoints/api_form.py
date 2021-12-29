@@ -22,7 +22,6 @@ log = flask_app.settings.LogDefaultConfig.LogDefaultConfig("ws_denuncias.log").l
 ns = api.namespace('formularios', description='Relativas a la gestión de trámites del Comité de Ética de CENACE')
 
 
-
 ser_from = srl.FormSerializers(api)
 api = ser_from.add_serializers()
 

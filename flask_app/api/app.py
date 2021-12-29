@@ -116,7 +116,7 @@ def main():
 
     # Iniciando la API
     log.info(">>>>> Starting production server <<<<<")
-    log.info(f">>>>> API running over: {init.API_PREFIX}")
+    log.info(f">>>>> API running over: {init.API_PORT}{init.API_PREFIX}")
     # serve the application
     serve(app, host='0.0.0.0', port=init.API_PORT)
 

@@ -30,6 +30,7 @@ config["MONGO_LOG_LEVEL"] = {"value": "OFF", "options": ["ON", "OFF"]}
 # FILE repository:
 config["DB_REPO"] = "_db"
 config["FILE_REPO"] = os.path.join(config["DB_REPO"], "files")
+config["LOGS_REPO"] = "logs"
 
 config["SUPPORTED_FORMAT_DATES"] = ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d", "%Y-%m-%d %H:%M:%S.%f"]
 config["DEFAULT_DATE_FORMAT"] = "%Y-%m-%d %H:%M:%S"
